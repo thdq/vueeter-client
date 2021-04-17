@@ -1,0 +1,14 @@
+node_modules
+server/dist
+client/dist
+
+yarn*
+package-*
+coverage
+.vscode
+.env
+
+sw.*
+.nuxt
+/docs
+.DS_STORE

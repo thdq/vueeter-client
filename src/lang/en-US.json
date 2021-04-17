@@ -1,0 +1,53 @@
+{
+    "welcome": {
+        "title": "Vueeter",
+        "description": "Connect with friends and the world around you on Vueeter.",
+        "buttons": {
+            "label": {
+                "signup": "Create new account",
+                "login": "Log in"
+            }
+        },
+        "login": {
+            "form": {
+                "label": {
+                    "username": "Username",
+                    "password": "Password"
+                },
+                "buttons": {
+                    "login": "Login"
+                }
+            }
+        },
+        "signin": {
+            "form:": {
+                "buttons": {
+                    "next": "Next",
+                    "create_account": "Create account"
+                },
+                "label": {
+                    "name": "Name",
+                    "email": "E-mail",
+                    "birth_date": "Birth date",
+                    "username": "Username",
+                    "password": "Password",
+                    "passwordConfirmartion": "Password confirmation"
+                },
+                "validation": {
+                    "required": {
+                        "field": "Field \"{0}\" is required"
+                    },
+                    "fields": {
+                        "valid_email": "Valid e-mail",
+                        "invalid_email": "Invalid e-mail",
+                        "username_length": "User cannot contain more than 50 characters",
+                        "invalid_password": "Password is not valid",
+                        "not_match_password": "Passwords do not macth"
+                    }
+
+                }
+            }
+        }
+
+    }
+}
