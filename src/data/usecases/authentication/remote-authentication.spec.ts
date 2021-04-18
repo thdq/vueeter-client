@@ -137,4 +137,23 @@ describe('RemoteAuthentication', () => {
 
     })
 
+    test('Should throw if HttpPostClient returns 500 on UnexpectedError', async () => {
+
+        const { sut, httpPostClientStub } = makeSut()
+
+        httpPostClientStub.response = {
+            statusCode: HttpStatusCode.serverError
+        }
+
+        const authParams: AuthenticationParams = {
+            username: faker.internet.userName(),
+            password: faker.internet.password()
+        }
+
+        const promise = sut.auth(authParams)
+
+        await expect(promise).rejects.toThrow(new UnexpectedError())
+
+    })
+
 })
