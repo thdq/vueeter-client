@@ -2,6 +2,7 @@ import faker from 'faker'
 import { AuthenticationParams } from '@/domain/usecases/authentication'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials'
 import { UnexpectedError } from '@/domain/errors/unexpected'
+import { UserModel } from '@/domain/model/user-model'
 import { HttpPostClient } from "@/data/protocols/http/http-methods-client"
 import { HttpPostParams } from '@/data/protocols/http/http-params'
 import { HttpResponse, HttpStatusCode } from '@/data/protocols/http/http-response'
@@ -9,19 +10,19 @@ import { RemoteAuthentication } from "./remote-authentication"
 
 interface SutType {
     sut: RemoteAuthentication
-    httpPostClientStub: HttpPostClient
+    httpPostClientStub: HttpPostClient<AuthenticationParams, UserModel>
 }
 
-const makeHttpPostClient = (): HttpPostClient => {
+const makeHttpPostClient = (): HttpPostClient<AuthenticationParams, UserModel> => {
 
-    class HttpPostClientStub implements HttpPostClient {
+    class HttpPostClientStub<T, R> implements HttpPostClient<T, R> {
         url?: string
-        body?: object
-        response: HttpResponse = {
+        body?: T
+        response: HttpResponse<R> = {
             statusCode: HttpStatusCode.success
         }
 
-        post (params: HttpPostParams): Promise<HttpResponse> {
+        post (params: HttpPostParams<T>): Promise<HttpResponse<R>> {
 
             const { url, body } = params
 
