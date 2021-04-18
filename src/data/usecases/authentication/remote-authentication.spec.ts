@@ -118,4 +118,23 @@ describe('RemoteAuthentication', () => {
 
     })
 
+    test('Should throw if HttpPostClient returns 404 on UnexpectedError', async () => {
+
+        const { sut, httpPostClientStub } = makeSut()
+
+        httpPostClientStub.response = {
+            statusCode: HttpStatusCode.notFound
+        }
+
+        const authParams: AuthenticationParams = {
+            username: faker.internet.userName(),
+            password: faker.internet.password()
+        }
+
+        const promise = sut.auth(authParams)
+
+        await expect(promise).rejects.toThrow(new UnexpectedError())
+
+    })
+
 })
