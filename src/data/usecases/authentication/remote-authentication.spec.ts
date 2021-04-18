@@ -1,7 +1,9 @@
 import faker from 'faker'
-import { HttpPostClient } from "@/data/protocols/http/http-methods-client"
 import { AuthenticationParams } from '@/domain/usecases/authentication'
+import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials'
+import { HttpPostClient } from "@/data/protocols/http/http-methods-client"
 import { HttpPostParams } from '@/data/protocols/http/http-params'
+import { HttpResponse, HttpStatusCode } from '@/data/protocols/http/http-response'
 import { RemoteAuthentication } from "./remote-authentication"
 
 interface SutType {
@@ -14,14 +16,17 @@ const makeHttpPostClient = (): HttpPostClient => {
     class HttpPostClientStub implements HttpPostClient {
         url?: string
         body?: object
+        response: HttpResponse = {
+            statusCode: HttpStatusCode.noContent
+        }
 
-        post (params: HttpPostParams): Promise<void> {
+        post (params: HttpPostParams): Promise<HttpResponse> {
 
             const { url, body } = params
 
             this.url = url
             this.body = body
-            return Promise.resolve()
+            return Promise.resolve(this.response)
         }
     }
 
@@ -71,6 +76,25 @@ describe('RemoteAuthentication', () => {
         await sut.auth(authParams)
 
         expect(httpPostClientStub.body).toEqual(authParams)
+
+    })
+
+    test('Should throw if HttpPostClient returns 401', async () => {
+
+        const { sut, httpPostClientStub } = makeSut()
+
+        httpPostClientStub.response = {
+            statusCode: HttpStatusCode.unathorized
+        }
+
+        const authParams: AuthenticationParams = {
+            username: faker.internet.userName(),
+            password: faker.internet.password()
+        }
+
+        const promise = sut.auth(authParams)
+
+        await expect(promise).rejects.toThrow(new InvalidCredentialsError())
 
     })
 
