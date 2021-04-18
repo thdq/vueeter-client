@@ -12,3 +12,6 @@ sw.*
 .nuxt
 /docs
 .DS_STORE
+src/components/index/login.vue
+.gitignore
+src/components/index/signin.vue

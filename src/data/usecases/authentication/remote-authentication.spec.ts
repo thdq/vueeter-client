@@ -157,4 +157,28 @@ describe('RemoteAuthentication', () => {
 
     })
 
+    test('Should return an UserModel if HttpPostClient returns 200', async () => {
+
+        const { sut, httpPostClientStub } = makeSut()
+
+        const httpResult = {
+            accessToken: faker.datatype.uuid()
+        }
+
+        httpPostClientStub.response = {
+            statusCode: HttpStatusCode.success,
+            body: httpResult
+        }
+
+        const authParams: AuthenticationParams = {
+            username: faker.internet.userName(),
+            password: faker.internet.password()
+        }
+
+        const user = await sut.auth(authParams)
+
+        expect(user).toEqual(httpResult)
+
+    })
+
 })
