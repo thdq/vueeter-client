@@ -1,6 +1,7 @@
 import faker from 'faker'
 import { AuthenticationParams } from '@/domain/usecases/authentication'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials'
+import { UnexpectedError } from '@/domain/errors/unexpected'
 import { HttpPostClient } from "@/data/protocols/http/http-methods-client"
 import { HttpPostParams } from '@/data/protocols/http/http-params'
 import { HttpResponse, HttpStatusCode } from '@/data/protocols/http/http-response'
@@ -17,7 +18,7 @@ const makeHttpPostClient = (): HttpPostClient => {
         url?: string
         body?: object
         response: HttpResponse = {
-            statusCode: HttpStatusCode.noContent
+            statusCode: HttpStatusCode.success
         }
 
         post (params: HttpPostParams): Promise<HttpResponse> {
@@ -79,7 +80,7 @@ describe('RemoteAuthentication', () => {
 
     })
 
-    test('Should throw if HttpPostClient returns 401', async () => {
+    test('Should throw if HttpPostClient returns 401 on InvalidCredentialsError', async () => {
 
         const { sut, httpPostClientStub } = makeSut()
 
@@ -95,6 +96,25 @@ describe('RemoteAuthentication', () => {
         const promise = sut.auth(authParams)
 
         await expect(promise).rejects.toThrow(new InvalidCredentialsError())
+
+    })
+
+    test('Should throw if HttpPostClient returns 400 on UnexpectedError', async () => {
+
+        const { sut, httpPostClientStub } = makeSut()
+
+        httpPostClientStub.response = {
+            statusCode: HttpStatusCode.badRequest
+        }
+
+        const authParams: AuthenticationParams = {
+            username: faker.internet.userName(),
+            password: faker.internet.password()
+        }
+
+        const promise = sut.auth(authParams)
+
+        await expect(promise).rejects.toThrow(new UnexpectedError())
 
     })
 
