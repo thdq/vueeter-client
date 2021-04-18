@@ -1,6 +1,7 @@
 import { HttpPostClient } from '@/data/protocols/http/http-methods-client'
 import { HttpStatusCode } from '@/data/protocols/http/http-response'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials'
+import { UnexpectedError } from '@/domain/errors/unexpected'
 import { AuthenticationParams } from '@/domain/usecases/authentication'
 
 export class RemoteAuthentication {
@@ -20,8 +21,9 @@ export class RemoteAuthentication {
         })
 
         switch (httpResponse.statusCode) {
+            case HttpStatusCode.success: break
             case HttpStatusCode.unathorized: throw new InvalidCredentialsError()
-            default: return Promise.resolve()
+            default: throw new UnexpectedError()
         }
 
     }
