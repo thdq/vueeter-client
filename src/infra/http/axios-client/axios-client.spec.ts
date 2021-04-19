@@ -23,7 +23,7 @@ const makeSut = (): SutTypes => {
 
 describe('AxiosClient', () => {
 
-    test('Should call axios with correct URL', () => {
+    test('Should call axios with correct URL and verb', () => {
 
         const { sut, mockedAxios } = makeSut()
 
@@ -33,7 +33,7 @@ describe('AxiosClient', () => {
             url: URL
         })
 
-        expect(mockedAxios).toHaveBeenCalledWith(URL)
+        expect(mockedAxios.post).toHaveBeenCalledWith(URL)
 
     })
 
