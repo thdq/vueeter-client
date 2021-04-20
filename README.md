@@ -1,20 +1,64 @@
-# vueeter
+## Vueeter (client-side), a social network like Twitter.
 
-## Build Setup
+### Status: In development
 
-```bash
-# install dependencies
-$ yarn install
+------
 
-# serve with hot reload at localhost:3000
-$ yarn dev
+#### Tech used along development:
 
-# build for production and launch server
-$ yarn build
-$ yarn start
+- TypeScript;
+- Vue.js;
+- Vuesax (UI framework);
+- Tailwindcss;
+- Jest;
+- Vue-jest;
+- CI/CD with Azure DevOps;
+- Eslint;
+- and more...
 
-# generate static project
-$ yarn generate
-```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+#### Methodology used along development:
+
+- Clean Architecture;
+- S.O.L.I.D principles;
+- TDD;
+- Conventional commits;
+- Hooks from commits.
+
+
+
+#### Application functionality to version 1.x.x:
+
+- [ ] Sign up an user;
+- [ ] Login an user;
+
+  
+
+#### Application functionality to version 2.x.x:
+
+- [ ] Create an vueet;
+- [ ] Reply an existing vueet;
+- [ ] Revueet an existing vueet;
+- [ ] Like an existing vueet;
+- [ ] Quote an existing vueet;
+
+  
+
+#### Application functionality to version 3.x.x:
+
+- [ ] Follow an existing user;
+- [ ] Edit user preferences;
+- [ ] Get vueets from existing public user;
+- [ ] Get vueets from existing private user;
+- [ ] Get vueets and answers from existing public user;
+- [ ] Get vueets and answers from existing private user;
+- [ ] Get liked vueets from existing public user;
+- [ ] Get vueets and answers from existing private user.
+
+
+
+#### Application functionality to version 4.x.x:
+
+- [ ] Get all my notifications;
+- [ ] Get all my mentions notifications.
