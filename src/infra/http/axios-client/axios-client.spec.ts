@@ -1,3 +1,4 @@
+import { HttpPostParams } from '@/data/protocols/http/http-params'
 import axios from 'axios'
 import faker from 'faker'
 import { AxiosClient } from './axios-client'
@@ -8,6 +9,11 @@ interface SutTypes {
     sut: AxiosClient,
     mockedAxios: jest.Mocked<typeof axios>
 }
+
+const makePostRequest = (): HttpPostParams<any> => ({
+    url: faker.internet.url(),
+    body: faker.random.objectElement()
+})
 
 const makeSut = (): SutTypes => {
 
@@ -27,13 +33,11 @@ describe('AxiosClient', () => {
 
         const { sut, mockedAxios } = makeSut()
 
-        const URL = faker.internet.url()
+        const request = makePostRequest()
 
-        sut.post({
-            url: URL
-        })
+        sut.post(request)
 
-        expect(mockedAxios.post).toHaveBeenCalledWith(URL)
+        expect(mockedAxios.post).toHaveBeenCalledWith(request)
 
     })
 
