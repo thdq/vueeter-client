@@ -1,7 +1,7 @@
-import { langs } from './src/config/i18n'
+import { langs } from './src/presentation/config/i18n'
 
 export default {
-    srcDir: 'src/',
+    srcDir: 'src/presentation/',
     head: {
         title: 'vueeter',
         meta: [

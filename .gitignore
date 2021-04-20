@@ -1,6 +1,5 @@
 node_modules
-server/dist
-client/dist
+dist
 
 yarn*
 package-*
@@ -12,6 +11,3 @@ sw.*
 .nuxt
 /docs
 .DS_STORE
-src/components/index/login.vue
-.gitignore
-src/components/index/signin.vue
