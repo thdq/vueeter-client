@@ -7,7 +7,8 @@ jest.mock('axios')
 
 interface SutTypes {
     sut: AxiosClient,
-    mockedAxios: jest.Mocked<typeof axios>
+    mockedAxios: jest.Mocked<typeof axios>,
+    requestStub: HttpPostParams<any>
 }
 
 const makePostRequest = (): HttpPostParams<any> => ({
@@ -17,27 +18,27 @@ const makePostRequest = (): HttpPostParams<any> => ({
 
 const makeSut = (): SutTypes => {
 
-    const sut = new AxiosClient()
     const mockedAxios = axios as jest.Mocked<typeof axios>
+    const requestStub = makePostRequest()
+    const sut = new AxiosClient()
 
     return {
         sut,
-        mockedAxios
+        mockedAxios,
+        requestStub
     }
 
 }
 
 describe('AxiosClient', () => {
 
-    test('Should call axios with correct URL and verb', () => {
+    test('Should call axios with correct values', () => {
 
-        const { sut, mockedAxios } = makeSut()
+        const { sut, mockedAxios, requestStub } = makeSut()
 
-        const request = makePostRequest()
+        sut.post(requestStub)
 
-        sut.post(request)
-
-        expect(mockedAxios.post).toHaveBeenCalledWith(request)
+        expect(mockedAxios.post).toHaveBeenCalledWith(requestStub.url, requestStub.body)
 
     })
 
