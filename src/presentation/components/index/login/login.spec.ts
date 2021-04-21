@@ -49,4 +49,14 @@ describe('Login component', () => {
 
     })
 
+    test('Should render login button', () => {
+
+        const { wrapper } = makeSut()
+
+        const loginButton = wrapper.find('[data-test=login-button]')
+
+        expect(loginButton.exists()).toBe(true)
+
+    })
+
 })
