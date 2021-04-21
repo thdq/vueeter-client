@@ -18,7 +18,7 @@
                     <vs-col w="7">
                         <vs-row align="center" justify="space-around" direction="column">
                             <vs-col w="12" class="max-w-md py-4 px-8 bg-white shadow-lg rounded-lg">
-                                <!-- <v-login /> -->
+                                <v-login />
                                 <vs-button data-test="button-signup" block flat active @click="modal.signup=!modal.signup">
                                     {{ $t('welcome.buttons.label.signup') }}
                                 </vs-button>
@@ -52,10 +52,13 @@
 </template>
 
 <script lang="ts" setup>
-
 import { defineComponent } from '@vue/composition-api'
+import loginComponent from '@/presentation/components/index/login.vue'
 
 export default defineComponent({
+    components: {
+        'v-login': loginComponent
+    },
     data () {
         return {
             modal: {
