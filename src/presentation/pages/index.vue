@@ -40,7 +40,7 @@
             </footer>
         </vs-row>
 
-        <vs-dialog v-model="modal.signup" width="50vh">
+        <vs-dialog v-show="modal.signup" v-model="modal.signup" data-test="modal-signup" width="50vh">
             <template #header>
                 <vs-row align="center" justify="space-around" direction="column">
                     <img class="w-8 h-8" src="~/assets/images/vueeter-logo.png">
@@ -53,7 +53,7 @@
 
 <script lang="ts" setup>
 import { defineComponent } from '@vue/composition-api'
-import loginComponent from '@/presentation/components/index/login.vue'
+import loginComponent from '~/components/index/login.vue'
 
 export default defineComponent({
     components: {
