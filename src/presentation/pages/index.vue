@@ -46,7 +46,7 @@
                     <img class="w-8 h-8" src="~/assets/images/vueeter-logo.png">
                 </vs-row>
             </template>
-            <!-- <v-sign /> -->
+            <v-signup />
         </vs-dialog>
     </div>
 </template>
@@ -54,10 +54,12 @@
 <script lang="ts" setup>
 import { defineComponent } from '@vue/composition-api'
 import loginComponent from '~/components/index/login.vue'
+import signupComponent from '~/components/index/signup.vue'
 
 export default defineComponent({
     components: {
-        'v-login': loginComponent
+        'v-login': loginComponent,
+        'v-signup': signupComponent
     },
     data () {
         return {
