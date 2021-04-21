@@ -45,4 +45,14 @@ describe('Index page', () => {
 
     })
 
+    test('Should exists v-login component', () => {
+
+        const { wrapper } = makeSut()
+
+        const loginComponent = wrapper.findComponent({ name: 'v-login' })
+
+        expect(loginComponent.exists()).toBe(true)
+
+    })
+
 })
