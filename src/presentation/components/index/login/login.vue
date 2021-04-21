@@ -16,7 +16,7 @@
                     />
                 </vs-row>
                 <vs-row class="py-2">
-                    <vs-button block border flat>
+                    <vs-button block border flat data-test="login-button">
                         {{ $t('welcome.login.form.buttons.login') }}
                     </vs-button>
                 </vs-row>
