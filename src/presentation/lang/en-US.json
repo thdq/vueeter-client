@@ -49,5 +49,15 @@
             }
         }
 
+    },
+    "components": {
+        "login": {
+            "form": {
+                "label": {
+                    "username": "Username",
+                    "password": "Password"
+                }
+            }
+        }
     }
 }
