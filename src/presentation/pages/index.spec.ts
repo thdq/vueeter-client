@@ -31,4 +31,18 @@ describe('Index page', () => {
 
     })
 
+    test('Should return modal.signup as true when clicks in SignUp button', () => {
+
+        const { wrapper } = makeSut()
+
+        const buttonSignUp = wrapper.find('[data-test=button-signup]')
+
+        buttonSignUp.trigger('click')
+
+        const modal = wrapper.vm.modal
+
+        expect(modal.signup).toBe(true)
+
+    })
+
 })
