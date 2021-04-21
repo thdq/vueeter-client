@@ -19,7 +19,7 @@
                 }
             }
         },
-        "signin": {
+        "signup": {
             "form:": {
                 "buttons": {
                     "next": "Next",

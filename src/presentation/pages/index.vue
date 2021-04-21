@@ -18,7 +18,7 @@
                     <vs-col w="7">
                         <vs-row align="center" justify="space-around" direction="column">
                             <vs-col w="12" class="max-w-md py-4 px-8 bg-white shadow-lg rounded-lg">
-                                <v-login />
+                                <!-- <v-login /> -->
                                 <vs-button block flat active @click="modal.sigin=!modal.sigin">
                                     {{ $t('welcome.buttons.label.signup') }}
                                 </vs-button>
@@ -40,13 +40,13 @@
             </footer>
         </vs-row>
 
-        <vs-dialog v-model="modal.sigin" width="50vh">
+        <vs-dialog v-model="modal.signup" width="50vh">
             <template #header>
                 <vs-row align="center" justify="space-around" direction="column">
                     <img class="w-8 h-8" src="~/assets/images/vueeter-logo.png">
                 </vs-row>
             </template>
-            <v-sign />
+            <!-- <v-sign /> -->
         </vs-dialog>
     </div>
 </template>
@@ -54,18 +54,12 @@
 <script lang="ts" setup>
 
 import { defineComponent } from '@vue/composition-api'
-import signComponent from '@/components/index/signin.vue'
-import loginComponent from '@/components/index/login.vue'
 
 export default defineComponent({
-    components: {
-        'v-sign': signComponent,
-        'v-login': loginComponent
-    },
     data () {
         return {
             modal: {
-                sigin: false
+                signup: false
             }
         }
     }
