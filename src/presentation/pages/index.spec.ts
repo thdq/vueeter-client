@@ -31,6 +31,16 @@ describe('Index page', () => {
 
     })
 
+    test('Should not show the SignUp modal initially', () => {
+
+        const { wrapper } = makeSut()
+
+        const modalSignUp = wrapper.find('[data-test=modal-signup]')
+
+        expect(modalSignUp.isVisible()).toBe(false)
+
+    })
+
     test('Should return modal.signup as true when clicks in SignUp button', () => {
 
         const { wrapper } = makeSut()
