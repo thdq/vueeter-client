@@ -65,4 +65,22 @@ describe('Index page', () => {
 
     })
 
+    test('Should exists v-signup component inside SignUp modal', async () => {
+
+        const { wrapper } = makeSut()
+
+        await wrapper.setData({
+            modal: {
+                signup: true
+            }
+        })
+
+        const modalSignUp = wrapper.find('[data-test=modal-signup]')
+        const signupComponent = wrapper.findComponent({ name: 'v-signup' })
+
+        expect(modalSignUp.isVisible()).toBe(true)
+        expect(signupComponent.exists()).toBe(true)
+
+    })
+
 })
