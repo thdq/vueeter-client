@@ -16,7 +16,7 @@
                     />
                 </vs-row>
                 <vs-row class="py-2">
-                    <vs-button block border flat data-test="login-button">
+                    <vs-button block border flat @click="handle(form)" data-test="login-button">
                         {{ $t('welcome.login.form.buttons.login') }}
                     </vs-button>
                 </vs-row>
@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
-import { LoginParams } from './login'
+import { LoginParams, LoginComponent } from './login'
 
 export default defineComponent({
     name: "VLogin",
@@ -40,8 +40,17 @@ export default defineComponent({
             password: ""
         })
 
+        const handle = async (form: LoginParams) => {
+
+            const loginComponent = new LoginComponent(form)
+
+            await loginComponent.auth()
+
+        }
+
         return {
-            form
+            form,
+            handle
         }
     }
 })

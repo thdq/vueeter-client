@@ -4,5 +4,15 @@ export type LoginParams = {
 }
 
 export class LoginComponent {
+    private readonly params: LoginParams
 
+    constructor (params: LoginParams) {
+        this.params = params
+
+    }
+
+    async auth (): Promise<void> {
+
+        await null
+    }
 }
