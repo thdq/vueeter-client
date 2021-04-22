@@ -1,5 +1,6 @@
 import { shallowMount, Wrapper, createLocalVue } from '@vue/test-utils'
 import VueCompositionApi from '@vue/composition-api'
+import faker from 'faker'
 import login from './login.vue'
 
 const localVue = createLocalVue()
@@ -56,6 +57,29 @@ describe('Login component', () => {
         const loginButton = wrapper.find('[data-test=login-button]')
 
         expect(loginButton.exists()).toBe(true)
+
+    })
+
+    test('Should call handle with correct values', () => {
+
+        const { wrapper } = makeSut()
+
+        const handleSpy = jest.spyOn(wrapper.vm, 'handle')
+
+        const formParams = {
+            username: faker.internet.userName(),
+            password: faker.internet.password()
+        }
+
+        wrapper.setData({
+            form: formParams
+        })
+
+        const loginButton = wrapper.find('[data-test=login-button]')
+
+        loginButton.trigger('click')
+
+        expect(handleSpy).toHaveBeenCalledWith(formParams)
 
     })
 
