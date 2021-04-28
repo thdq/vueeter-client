@@ -3,57 +3,59 @@ import { AuthenticationParams } from '@/domain/usecases/authentication'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials'
 import { UnexpectedError } from '@/domain/errors/unexpected'
 import { UserModel } from '@/domain/model/user-model'
-import { HttpPostClient } from "@/data/protocols/http/http-methods-client"
-import { HttpPostParams } from '@/data/protocols/http/http-params'
-import { HttpResponse, HttpStatusCode } from '@/data/protocols/http/http-response'
+import { HttpClient, HttpRequest, HttpResponse, HttpStatusCode, HttpMethod } from '@/data/protocols/http/http-client'
 import { RemoteAuthentication } from "./remote-authentication"
 
 interface SutType {
     sut: RemoteAuthentication
-    httpPostClientStub: HttpPostClient<AuthenticationParams, UserModel>
+    httpClientStub: HttpClient<UserModel>
 }
 
-const makeHttpPostClient = (): HttpPostClient<AuthenticationParams, UserModel> => {
+const makeHttpClient = (): HttpClient<UserModel> => {
 
-    class HttpPostClientStub<T, R> implements HttpPostClient<T, R> {
+    class HttpClientStub<R> implements HttpClient<R> {
         url?: string
-        body?: T
+        method: HttpMethod
+        body?: any
+        headers?: any
         response: HttpResponse<R> = {
             statusCode: HttpStatusCode.success
         }
 
-        post (params: HttpPostParams<T>): Promise<HttpResponse<R>> {
+        async request (data: HttpRequest): Promise<HttpResponse<R>> {
 
-            const { url, body } = params
+            this.url = data.url
+            this.method = data.method
+            this.body = data.body
+            this.headers = data.headers
 
-            this.url = url
-            this.body = body
-            return Promise.resolve(this.response)
+            return await this.response
+
         }
     }
 
-    return new HttpPostClientStub()
+    return new HttpClientStub()
 
 }
 
 const makeSut = (url: string = faker.internet.url()): SutType => {
 
-    const httpPostClientStub = makeHttpPostClient()
-    const sut = new RemoteAuthentication(url, httpPostClientStub)
+    const httpClientStub = makeHttpClient()
+    const sut = new RemoteAuthentication(url, httpClientStub)
 
     return {
         sut,
-        httpPostClientStub
+        httpClientStub
     }
 }
 
 describe('RemoteAuthentication', () => {
 
-    test('Should call HttpPostClient with correct URL', async () => {
+    test('Should call HttpClient with correct URL', async () => {
 
         const url = '_other_url'
 
-        const { sut, httpPostClientStub } = makeSut(url)
+        const { sut, httpClientStub } = makeSut(url)
 
         const authParams: AuthenticationParams = {
             username: faker.internet.userName(),
@@ -62,13 +64,13 @@ describe('RemoteAuthentication', () => {
 
         await sut.auth(authParams)
 
-        expect(httpPostClientStub.url).toBe(url)
+        expect(httpClientStub.url).toBe(url)
 
     })
 
-    test('Should call HttpPostClient with correct body', async () => {
+    test('Should call HttpClient with correct body', async () => {
 
-        const { sut, httpPostClientStub } = makeSut()
+        const { sut, httpClientStub } = makeSut()
 
         const authParams: AuthenticationParams = {
             username: faker.internet.userName(),
@@ -77,16 +79,16 @@ describe('RemoteAuthentication', () => {
 
         await sut.auth(authParams)
 
-        expect(httpPostClientStub.body).toEqual(authParams)
+        expect(httpClientStub.body).toEqual(authParams)
 
     })
 
-    test('Should throw if HttpPostClient returns 401 on InvalidCredentialsError', async () => {
+    test('Should throw if HttpClient returns 401 on InvalidCredentialsError', async () => {
 
-        const { sut, httpPostClientStub } = makeSut()
+        const { sut, httpClientStub } = makeSut()
 
-        httpPostClientStub.response = {
-            statusCode: HttpStatusCode.unathorized
+        httpClientStub.response = {
+            statusCode: HttpStatusCode.unauthorized
         }
 
         const authParams: AuthenticationParams = {
@@ -100,11 +102,11 @@ describe('RemoteAuthentication', () => {
 
     })
 
-    test('Should throw if HttpPostClient returns 400 on UnexpectedError', async () => {
+    test('Should throw if HttpClient returns 400 on UnexpectedError', async () => {
 
-        const { sut, httpPostClientStub } = makeSut()
+        const { sut, httpClientStub } = makeSut()
 
-        httpPostClientStub.response = {
+        httpClientStub.response = {
             statusCode: HttpStatusCode.badRequest
         }
 
@@ -119,11 +121,11 @@ describe('RemoteAuthentication', () => {
 
     })
 
-    test('Should throw if HttpPostClient returns 404 on UnexpectedError', async () => {
+    test('Should throw if HttpClient returns 404 on UnexpectedError', async () => {
 
-        const { sut, httpPostClientStub } = makeSut()
+        const { sut, httpClientStub } = makeSut()
 
-        httpPostClientStub.response = {
+        httpClientStub.response = {
             statusCode: HttpStatusCode.notFound
         }
 
@@ -138,11 +140,11 @@ describe('RemoteAuthentication', () => {
 
     })
 
-    test('Should throw if HttpPostClient returns 500 on UnexpectedError', async () => {
+    test('Should throw if HttpClient returns 500 on UnexpectedError', async () => {
 
-        const { sut, httpPostClientStub } = makeSut()
+        const { sut, httpClientStub } = makeSut()
 
-        httpPostClientStub.response = {
+        httpClientStub.response = {
             statusCode: HttpStatusCode.serverError
         }
 
@@ -157,15 +159,15 @@ describe('RemoteAuthentication', () => {
 
     })
 
-    test('Should return an UserModel if HttpPostClient returns 200', async () => {
+    test('Should return an UserModel if HttpClient returns 200', async () => {
 
-        const { sut, httpPostClientStub } = makeSut()
+        const { sut, httpClientStub } = makeSut()
 
         const httpResult = {
             accessToken: faker.datatype.uuid()
         }
 
-        httpPostClientStub.response = {
+        httpClientStub.response = {
             statusCode: HttpStatusCode.success,
             body: httpResult
         }
