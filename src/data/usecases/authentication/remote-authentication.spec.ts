@@ -4,11 +4,22 @@ import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials'
 import { UnexpectedError } from '@/domain/errors/unexpected'
 import { UserModel } from '@/domain/model/user-model'
 import { HttpClient, HttpRequest, HttpResponse, HttpStatusCode, HttpMethod } from '@/data/protocols/http/http-client'
+import { Validation } from '@/presentation/protocols/validation'
 import { RemoteAuthentication } from "./remote-authentication"
-
 interface SutType {
     sut: RemoteAuthentication
     httpClientStub: HttpClient<UserModel>
+    validationStub: Validation
+}
+
+const makeValidation = (): Validation => {
+    class ValidationStub {
+        validate (input: any): Error {
+            return null
+        }
+    }
+
+    return new ValidationStub()
 }
 
 const makeHttpClient = (): HttpClient<UserModel> => {
@@ -41,11 +52,13 @@ const makeHttpClient = (): HttpClient<UserModel> => {
 const makeSut = (url: string = faker.internet.url()): SutType => {
 
     const httpClientStub = makeHttpClient()
-    const sut = new RemoteAuthentication(url, httpClientStub)
+    const validationStub = makeValidation()
+    const sut = new RemoteAuthentication(url, httpClientStub, validationStub)
 
     return {
         sut,
-        httpClientStub
+        httpClientStub,
+        validationStub
     }
 }
 
@@ -80,6 +93,23 @@ describe('RemoteAuthentication', () => {
         await sut.auth(authParams)
 
         expect(httpClientStub.body).toEqual(authParams)
+
+    })
+
+    test('Should call Validation with correct values', async () => {
+
+        const { sut, validationStub } = makeSut()
+
+        const validationSpy = jest.spyOn(validationStub, 'validate')
+
+        const authParams: AuthenticationParams = {
+            username: faker.internet.userName(),
+            password: faker.internet.password()
+        }
+
+        await sut.auth(authParams)
+
+        expect(validationSpy).toHaveBeenCalledWith(authParams)
 
     })
 
