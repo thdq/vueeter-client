@@ -5,7 +5,9 @@ import { UnexpectedError } from '@/domain/errors/unexpected'
 import { UserModel } from '@/domain/model/user-model'
 import { HttpClient, HttpRequest, HttpResponse, HttpStatusCode, HttpMethod } from '@/data/protocols/http/http-client'
 import { Validation } from '@/presentation/protocols/validation'
+import { MissingParamsError } from '@/presentation/errors'
 import { RemoteAuthentication } from "./remote-authentication"
+
 interface SutType {
     sut: RemoteAuthentication
     httpClientStub: HttpClient<UserModel>
@@ -110,6 +112,23 @@ describe('RemoteAuthentication', () => {
         await sut.auth(authParams)
 
         expect(validationSpy).toHaveBeenCalledWith(authParams)
+
+    })
+
+    test('Should throws if Validation fails', async () => {
+
+        const { sut, validationStub } = makeSut()
+
+        jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => new MissingParamsError("password"))
+
+        const authParams: AuthenticationParams = {
+            username: faker.internet.userName(),
+            password: ""
+        }
+
+        const promise = sut.auth(authParams)
+
+        await expect(promise).rejects.toThrow(new MissingParamsError("password"))
 
     })
 
