@@ -53,8 +53,8 @@
 
 <script lang="ts" setup>
 import { defineComponent } from '@vue/composition-api'
-import loginComponent from '~/components/index/login/login.vue'
-import signupComponent from '~/components/index/signup.vue'
+import loginComponent from '~app/components/index/login/login.vue'
+import signupComponent from '~app/components/index/signup.vue'
 
 export default defineComponent({
     components: {
