@@ -1,4 +1,6 @@
+import env from './src/main/config/env'
 import { langs } from './src/presentation/config/i18n'
+import { resolve } from 'path'
 
 export default {
     srcDir: 'src/presentation/',
@@ -51,12 +53,18 @@ export default {
         '@nuxtjs/pwa'
     ],
     axios: {
-        baseURL: 'http://localhost:5050/api'
+        baseURL: env.API_URL
     },
     pwa: {
         manifest: {
             lang: 'en'
         }
+    },
+    alias: {
+        '@': resolve(__dirname, './src'),
+        '~app':  resolve(__dirname, './src/presentation'),
+        '~assets': `<srcDir>/assets`,
+        '~static': `<srcDir>/static`,
     },
     build: {
     },

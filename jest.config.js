@@ -1,9 +1,11 @@
+const { resolve } = require('path')
+const { pathsToModuleNameMapper } = require('ts-jest/utils')
+const { compilerOptions } = require('./tsconfig.json')
+
 module.exports = {
-    moduleNameMapper: {
-        '^@/(.*)$': '<rootDir>/src/$1',
-        '^~/(.*)$': '<rootDir>/src/presentation/$1',
-        '^vue$': 'vue/dist/vue.common.js'
-    },
+    roots: ['<rootDir>'],
+    modulePaths: ['<rootDir>'],
+    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
     moduleFileExtensions: [
         'ts',
         'js',
