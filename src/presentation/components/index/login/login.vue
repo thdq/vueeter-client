@@ -15,8 +15,26 @@
                         data-test="password-input"
                     />
                 </vs-row>
+                <vs-row v-if="apiResult.error">
+                    <vs-alert class="alert-error" data-test="alert-error" color="danger">
+                        <template #icon>
+                            <i class="bx bx-error-circle" />
+                        </template>
+                        <template class="py-0" #title>
+                            {{ $t('welcome.login.form.error.unauthorized.title') }}
+                        </template>
+                        {{ apiResult.message }}
+                    </vs-alert>
+                </vs-row>
                 <vs-row class="py-2">
-                    <vs-button block border flat @click="handle(form)" data-test="login-button">
+                    <vs-button
+                        data-test="login-button"
+                        :loading="waitingAPIResponse"
+                        block
+                        border
+                        flat
+                        @click="handle(form, waitingAPIResponse, apiResult)"
+                    >
                         {{ $t('welcome.login.form.buttons.login') }}
                     </vs-button>
                 </vs-row>
@@ -30,25 +48,50 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
-import { LoginParams, LoginComponent } from './login'
+import { AuthenticationParams } from "@/domain/usecases/authentication"
+import { makeCreateAuthentication } from "@/main/factories/components"
+import { LoginAPIResult } from './login.protocols'
 
 export default defineComponent({
     name: "VLogin",
     setup () {
-        const form = ref<LoginParams>({
+        const waitingAPIResponse = ref<boolean>(false)
+        const apiResult = ref<LoginAPIResult>({
+            error: false,
+            message: ""
+        })
+
+        const form = ref<AuthenticationParams>({
             username: "",
             password: ""
         })
 
-        const handle = async (form: LoginParams) => {
+        const handle = async (form: AuthenticationParams, waitingAPIResponse: boolean, apiResult: LoginAPIResult): Promise<void> => {
 
-            const loginComponent = new LoginComponent(form)
+            try {
 
-            await loginComponent.auth()
+                waitingAPIResponse = true
+
+                const remoteAuthenticationService = makeCreateAuthentication()
+
+                await remoteAuthenticationService.auth(form)
+
+            } catch (error) {
+
+                apiResult.error = true
+                apiResult.message = error.message
+
+            } finally {
+
+                waitingAPIResponse = false
+
+            }
 
         }
 
         return {
+            waitingAPIResponse,
+            apiResult,
             form,
             handle
         }

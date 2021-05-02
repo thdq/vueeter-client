@@ -16,6 +16,14 @@
                 },
                 "buttons": {
                     "login": "Login"
+                },
+                "error": {
+                    "unauthorized": {
+                        "title": "Credentials provided are invalid"
+                    },
+                    "unexpected": {
+                        "title": "Unexpected error"
+                    }
                 }
             }
         },
