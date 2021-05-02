@@ -1,6 +1,8 @@
+import Vue from 'vue'
 import { shallowMount, Wrapper, createLocalVue } from '@vue/test-utils'
 import VueCompositionApi from '@vue/composition-api'
 import faker from 'faker'
+import { MissingParamsError } from '@/presentation/errors'
 import login from './login.vue'
 
 const localVue = createLocalVue()
@@ -28,6 +30,11 @@ const makeSut = (): WrapperTypes => {
 }
 
 describe('Login component', () => {
+
+    const nextTick = async (wrapper: Wrapper<any>): Promise<void> => {
+        await Vue.nextTick()
+        await wrapper.vm.$nextTick()
+    }
 
     test('Should render the div element in the first tag of the template', () => {
 
@@ -79,7 +86,35 @@ describe('Login component', () => {
 
         loginButton.trigger('click')
 
-        expect(handleSpy).toHaveBeenCalledWith(formParams)
+        expect(handleSpy).toHaveBeenCalledWith(formParams, false, { error: false, message: "" })
+
+    })
+
+    test('Should show error alert if username is not provided', async () => {
+
+        const { wrapper } = makeSut()
+
+        const formParams = {
+            username: "",
+            password: faker.internet.password()
+        }
+
+        wrapper.setData({
+            form: formParams
+        })
+
+        const loginButton = wrapper.find('[data-test=login-button]')
+
+        loginButton.trigger('click')
+
+        await nextTick(wrapper)
+
+        const { apiResult } = wrapper.vm
+        const alertError = wrapper.find('[data-test=alert-error]')
+
+        expect(apiResult.error).toBe(true)
+        expect(apiResult.message).toBe(new MissingParamsError("username").message)
+        expect(alertError.isVisible()).toBe(true)
 
     })
 
