@@ -118,4 +118,32 @@ describe('Login component', () => {
 
     })
 
+    test('Should show error alert if password is not provided', async () => {
+
+        const { wrapper } = makeSut()
+
+        const formParams = {
+            username: faker.internet.userName(),
+            password: ""
+        }
+
+        wrapper.setData({
+            form: formParams
+        })
+
+        const loginButton = wrapper.find('[data-test=login-button]')
+
+        loginButton.trigger('click')
+
+        await nextTick(wrapper)
+
+        const { apiResult } = wrapper.vm
+        const alertError = wrapper.find('[data-test=alert-error]')
+
+        expect(apiResult.error).toBe(true)
+        expect(apiResult.message).toBe(new MissingParamsError("password").message)
+        expect(alertError.isVisible()).toBe(true)
+
+    })
+
 })
