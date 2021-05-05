@@ -1,4 +1,11 @@
 {
+    "domain": {
+        "erros:": {
+            "invalid": {
+                "credentials": "Crendentials provided is incorrect"
+            }
+        }
+    },
     "welcome": {
         "title": "Vueeter",
         "description": "Connect with friends and the world around you on Vueeter.",
