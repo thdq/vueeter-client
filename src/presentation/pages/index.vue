@@ -54,7 +54,7 @@
 <script lang="ts" setup>
 import { defineComponent } from '@nuxtjs/composition-api'
 import loginComponent from '~app/components/index/login/login.vue'
-import signupComponent from '~app/components/index/signup.vue'
+import signupComponent from '~app/components/index/signup/signup.vue'
 
 export default defineComponent({
     components: {

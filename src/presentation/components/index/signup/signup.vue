@@ -9,11 +9,13 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-    name: 'v-signup',
-    data () {
+    name: 'VSignup',
+    setup () {
+
         return {
 
         }
+
     }
 })
 </script>
