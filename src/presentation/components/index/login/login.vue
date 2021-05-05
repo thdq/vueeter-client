@@ -15,7 +15,7 @@
                         data-test="password-input"
                     />
                 </vs-row>
-                <vs-row v-if="apiResult.error">
+                <vs-row v-if="apiResponse.error">
                     <vs-alert class="alert-error" data-test="alert-error" color="danger">
                         <template #icon>
                             <i class="bx bx-error-circle" />
@@ -23,17 +23,17 @@
                         <template class="py-0" #title>
                             {{ $t('welcome.login.form.error.unauthorized.title') }}
                         </template>
-                        {{ apiResult.message }}
+                        {{ apiResponse.messageError }}
                     </vs-alert>
                 </vs-row>
                 <vs-row class="py-2">
                     <vs-button
                         data-test="login-button"
-                        :loading="waitingAPIResponse"
+                        :loading="apiResponse.waiting"
                         block
                         border
                         flat
-                        @click="handle(form, waitingAPIResponse, apiResult)"
+                        @click="handle(form, apiResponse)"
                     >
                         {{ $t('welcome.login.form.buttons.login') }}
                     </vs-button>
@@ -47,18 +47,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@vue/composition-api'
-import { AuthenticationParams } from "@/domain/usecases/authentication"
-import { makeCreateAuthentication } from "@/main/factories/components"
-import { LoginAPIResult } from './login.protocols'
+import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
+import { LoginService } from "@/presentation/services/user/login"
+import { LoginAPIResponse, AuthenticationParams } from './login.protocols'
 
 export default defineComponent({
     name: "VLogin",
     setup () {
-        const waitingAPIResponse = ref<boolean>(false)
-        const apiResult = ref<LoginAPIResult>({
+        const store = useStore()
+
+        const apiResponse = ref<LoginAPIResponse>({
+            waiting: false,
             error: false,
-            message: ""
+            messageError: ""
         })
 
         const form = ref<AuthenticationParams>({
@@ -66,32 +67,31 @@ export default defineComponent({
             password: ""
         })
 
-        const handle = async (form: AuthenticationParams, waitingAPIResponse: boolean, apiResult: LoginAPIResult): Promise<void> => {
+        const handle = async (form: AuthenticationParams, apiResponse: LoginAPIResponse): Promise<void> => {
 
             try {
 
-                waitingAPIResponse = true
+                apiResponse.waiting = true
 
-                const remoteAuthenticationService = makeCreateAuthentication()
+                const loginService = new LoginService(store)
 
-                await remoteAuthenticationService.auth(form)
+                await loginService.auth(form)
 
             } catch (error) {
 
-                apiResult.error = true
-                apiResult.message = error.message
+                apiResponse.error = true
+                apiResponse.messageError = error.message
 
             } finally {
 
-                waitingAPIResponse = false
+                apiResponse.waiting = false
 
             }
 
         }
 
         return {
-            waitingAPIResponse,
-            apiResult,
+            apiResponse,
             form,
             handle
         }
