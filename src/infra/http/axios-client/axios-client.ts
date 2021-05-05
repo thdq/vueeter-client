@@ -23,7 +23,7 @@ export class AxiosClient implements HttpClient {
             })
 
         } catch (error) {
-            axiosResponse = error.response
+            axiosResponse = error.response ?? error.message
         }
 
         return {

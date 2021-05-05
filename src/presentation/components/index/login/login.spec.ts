@@ -1,14 +1,16 @@
 import Vue from 'vue'
-import { shallowMount, Wrapper, createLocalVue } from '@vue/test-utils'
-import VueCompositionApi from '@vue/composition-api'
+import { shallowMount, Wrapper } from '@vue/test-utils'
 import faker from 'faker'
 import { MissingParamsError } from '@/presentation/errors'
 import login from './login.vue'
-
-const localVue = createLocalVue()
-localVue.use(VueCompositionApi)
+import { LoginAPIResponse } from './login.protocols'
 
 jest.spyOn(console, 'error').mockImplementation(() => {})
+
+const nextTick = async (wrapper: Wrapper<any>): Promise<void> => {
+    await Vue.nextTick()
+    await wrapper.vm.$nextTick()
+}
 
 interface WrapperTypes {
     wrapper: Wrapper<any>
@@ -19,8 +21,7 @@ const makeSut = (): WrapperTypes => {
     const wrapper = shallowMount(login, {
         mocks: {
             $t: () => {}
-        },
-        localVue
+        }
     })
 
     return {
@@ -30,11 +31,6 @@ const makeSut = (): WrapperTypes => {
 }
 
 describe('Login component', () => {
-
-    const nextTick = async (wrapper: Wrapper<any>): Promise<void> => {
-        await Vue.nextTick()
-        await wrapper.vm.$nextTick()
-    }
 
     test('Should render the div element in the first tag of the template', () => {
 
@@ -86,7 +82,12 @@ describe('Login component', () => {
 
         loginButton.trigger('click')
 
-        expect(handleSpy).toHaveBeenCalledWith(formParams, false, { error: false, message: "" })
+        const handleParams = {
+            formParams,
+            apiResponseParams: wrapper.vm.apiResponse
+        }
+
+        expect(handleSpy).toHaveBeenCalledWith(handleParams.formParams, handleParams.apiResponseParams)
 
     })
 
@@ -109,11 +110,11 @@ describe('Login component', () => {
 
         await nextTick(wrapper)
 
-        const { apiResult } = wrapper.vm
+        const apiResponse = wrapper.vm.apiResponse as LoginAPIResponse
         const alertError = wrapper.find('[data-test=alert-error]')
 
-        expect(apiResult.error).toBe(true)
-        expect(apiResult.message).toBe(new MissingParamsError("username").message)
+        expect(apiResponse.error).toBe(true)
+        expect(apiResponse.messageError).toBe(new MissingParamsError("username").message)
         expect(alertError.isVisible()).toBe(true)
 
     })
@@ -137,11 +138,12 @@ describe('Login component', () => {
 
         await nextTick(wrapper)
 
-        const { apiResult } = wrapper.vm
+        const apiResponse = wrapper.vm.apiResponse as LoginAPIResponse
         const alertError = wrapper.find('[data-test=alert-error]')
 
-        expect(apiResult.error).toBe(true)
-        expect(apiResult.message).toBe(new MissingParamsError("password").message)
+        expect(apiResponse.error).toBe(true)
+        expect(apiResponse.messageError).toBe(new MissingParamsError("password").message)
+
         expect(alertError.isVisible()).toBe(true)
 
     })

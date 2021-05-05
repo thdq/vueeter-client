@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 import loginComponent from '~app/components/index/login/login.vue'
 import signupComponent from '~app/components/index/signup.vue'
 
