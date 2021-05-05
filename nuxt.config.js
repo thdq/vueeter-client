@@ -20,16 +20,14 @@ export default {
         'assets/css/global.css'
     ],
     plugins: [
-        '@/plugins/vuesax',
-        '~/plugins/composition-api',
-        '~/plugins/axios'
+        '@/plugins/vuesax'
     ],
     components: true,
     buildModules: [
+        '@nuxtjs/composition-api/module',
         '@nuxt/typescript-build',
         '@nuxtjs/stylelint-module',
         '@nuxtjs/tailwindcss',
-        '@nuxt/typescript-build',
         [
             'nuxt-i18n',
             {
