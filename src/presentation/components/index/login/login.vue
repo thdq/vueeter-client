@@ -21,7 +21,7 @@
                             <i class="bx bx-error-circle" />
                         </template>
                         <template class="py-0" #title>
-                            {{ $t('welcome.login.form.error.unauthorized.title') }}
+                            {{ $t('welcome.login.form.error.title') }}
                         </template>
                         {{ apiResponse.messageError }}
                     </vs-alert>

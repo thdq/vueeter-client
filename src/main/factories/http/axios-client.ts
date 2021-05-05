@@ -1,4 +1,4 @@
-import { HttpRequest, HttpResponse, HttpClient, HttpMethod } from '@/data/protocols/http/http-client'
+import { HttpRequest, HttpResponse, HttpClient, HttpMethod, HttpStatusCode } from '@/data/protocols/http/http-client'
 
 import axios, { AxiosResponse } from 'axios'
 
@@ -23,7 +23,18 @@ class AxiosHttpClient implements HttpClient {
             })
 
         } catch (error) {
-            axiosResponse = error.response
+
+            if (error.status) {
+
+                axiosResponse = error.response
+
+            } else {
+                axiosResponse = Object.assign({}, {
+                    status: HttpStatusCode.notFound,
+                    data: error.message
+                }) as any
+            }
+
         }
 
         return {

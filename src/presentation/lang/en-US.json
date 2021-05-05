@@ -25,6 +25,7 @@
                     "login": "Login"
                 },
                 "error": {
+                    "title": "There was an error authenticating the user",
                     "unauthorized": {
                         "title": "Credentials provided are invalid"
                     },
