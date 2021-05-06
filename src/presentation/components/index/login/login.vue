@@ -48,8 +48,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
-import { LoginService } from "@/presentation/services/user/login"
-import { LoginAPIResponse, AuthenticationParams } from './login.protocols'
+import { LoginAPIResponse, AuthenticationParams, LoginService } from './login.protocols'
 
 export default defineComponent({
     name: "VLogin",

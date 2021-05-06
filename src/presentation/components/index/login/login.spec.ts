@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import { shallowMount, Wrapper } from '@vue/test-utils'
 import faker from 'faker'
-import { MissingParamsError } from '@/presentation/errors'
 import login from './login.vue'
-import { LoginAPIResponse } from './login.protocols'
+import { LoginAPIResponse, MissingParamsError } from './login.protocols'
 
 jest.spyOn(console, 'error').mockImplementation(() => {})
 
