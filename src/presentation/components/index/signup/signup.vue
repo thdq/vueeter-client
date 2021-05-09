@@ -38,6 +38,7 @@
                         block
                         border
                         flat
+                        @click="handle(form, apiResponse)"
                     >
                         {{ $t('welcome.signup.form.buttons.create') }}
                     </vs-button>
@@ -71,9 +72,29 @@ export default defineComponent({
             username: ""
         })
 
+        const handle = (form: SignUpParams, apiResponse: SignupAPIResponse): void => {
+
+            try {
+
+                apiResponse.waiting = true
+
+            } catch (error) {
+
+                apiResponse.error = true
+                apiResponse.messageError = error.message
+
+            } finally {
+
+                apiResponse.waiting = false
+
+            }
+
+        }
+
         return {
             form,
-            apiResponse
+            apiResponse,
+            handle
         }
 
     }
