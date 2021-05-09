@@ -36,6 +36,7 @@
             }
         },
         "signup": {
+            "title": "Create new account",
             "form:": {
                 "buttons": {
                     "next": "Next",

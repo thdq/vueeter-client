@@ -20,6 +20,28 @@
                 <vs-row class="py-4">
                     <vs-input v-model="form.username" :label-placeholder="$t('welcome.signup.form.label.username')" block data-test="username-input" />
                 </vs-row>
+                <vs-row v-if="apiResponse.error">
+                    <vs-alert class="alert-error" data-test="alert-error" color="danger">
+                        <template #icon>
+                            <i class="bx bx-error-circle" />
+                        </template>
+                        <template class="py-0" #title>
+                            {{ $t('welcome.signup.form.error.title') }}
+                        </template>
+                        {{ apiResponse.messageError }}
+                    </vs-alert>
+                </vs-row>
+                <vs-row class="py-2">
+                    <vs-button
+                        data-test="signup-button"
+                        :loading="apiResponse.waiting"
+                        block
+                        border
+                        flat
+                    >
+                        {{ $t('welcome.signup.form.buttons.create') }}
+                    </vs-button>
+                </vs-row>
             </vs-col>
         </vs-row>
     </div>
@@ -28,10 +50,17 @@
 <script lang="ts" setup>
 import { defineComponent, reactive } from '@nuxtjs/composition-api'
 import { SignUpParams } from "@/domain/usecases/signup"
+import { SignupAPIResponse } from "./signup.protocols"
 
 export default defineComponent({
     name: 'VSignup',
     setup () {
+
+        const apiResponse = reactive<SignupAPIResponse>({
+            waiting: false,
+            error: false,
+            messageError: ""
+        })
 
         const form = reactive<SignUpParams>({
             name: "",
@@ -43,7 +72,8 @@ export default defineComponent({
         })
 
         return {
-            form
+            form,
+            apiResponse
         }
 
     }

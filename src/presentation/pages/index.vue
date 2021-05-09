@@ -43,7 +43,9 @@
         <vs-dialog v-show="modal.signup" v-model="modal.signup" data-test="modal-signup" width="50vh">
             <template #header>
                 <vs-row align="center" justify="space-around" direction="column">
-                    <img class="w-8 h-8" src="~/assets/images/vueeter-logo.png">
+                    <h4 class="not-margin">
+                        {{ $t('welcome.signup.title') }}
+                    </h4>
                 </vs-row>
             </template>
             <v-signup />
