@@ -1,4 +1,6 @@
+import { SignUpParams } from '@/domain/usecases/signup'
 import { shallowMount, Wrapper } from '@vue/test-utils'
+import faker from 'faker'
 import signup from './signup.vue'
 
 jest.spyOn(console, 'error').mockImplementation(() => {})
@@ -58,6 +60,37 @@ describe('SignUp component', () => {
         const createButton = wrapper.find('[data-test=signup-button]')
 
         expect(createButton.exists()).toBe(true)
+
+    })
+
+    test('Shoul call handle with correct values', () => {
+
+        const { wrapper } = makeSut()
+
+        const handleSpy = jest.spyOn(wrapper.vm, 'handle')
+
+        const password = faker.internet.password()
+
+        const formParams: SignUpParams = {
+            birth_date: faker.datatype.datetime().toISOString(),
+            email: faker.internet.email(),
+            name: faker.random.words(),
+            password,
+            passwordConfirm: password,
+            username: faker.internet.userName()
+        }
+
+        const apiResponseParams = wrapper.vm.apiResponse
+
+        wrapper.setData({
+            form: formParams
+        })
+
+        const createButton = wrapper.find('[data-test=signup-button]')
+
+        createButton.trigger('click')
+
+        expect(handleSpy).toHaveBeenCalledWith(formParams, apiResponseParams)
 
     })
 
