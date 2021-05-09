@@ -51,4 +51,14 @@ describe('SignUp component', () => {
 
     })
 
+    test('Should render create button', () => {
+
+        const { wrapper } = makeSut()
+
+        const createButton = wrapper.find('[data-test=signup-button]')
+
+        expect(createButton.exists()).toBe(true)
+
+    })
+
 })
