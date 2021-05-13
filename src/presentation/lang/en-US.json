@@ -37,7 +37,7 @@
         },
         "signup": {
             "title": "Create new account",
-            "form:": {
+            "form": {
                 "buttons": {
                     "next": "Next",
                     "create_account": "Create account"
@@ -48,7 +48,7 @@
                     "birth_date": "Birth date",
                     "username": "Username",
                     "password": "Password",
-                    "passwordConfirmartion": "Password confirmation"
+                    "passwordConfirm": "Password confirmation"
                 },
                 "validation": {
                     "required": {
