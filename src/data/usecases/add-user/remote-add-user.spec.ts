@@ -151,4 +151,34 @@ describe('RemoteAddUser', () => {
         await expect(promise).rejects.toThrow(new UnexpectedError())
     })
 
+    test('Should return an UserModel if HttpClient returns 200', async () => {
+
+        const { sut, httpClientStub } = makeSut()
+
+        const httpResult: UserModel = {
+            accessToken: faker.datatype.uuid()
+        }
+
+        httpClientStub.response = {
+            statusCode: HttpStatusCode.success,
+            body: httpResult
+        }
+
+        const password = faker.internet.password()
+
+        const formParams: SignUpParams = {
+            birth_date: faker.datatype.datetime().toISOString(),
+            email: faker.internet.email(),
+            name: faker.random.words(),
+            password,
+            passwordConfirm: password,
+            username: faker.internet.userName()
+        }
+
+        const account = await sut.signup(formParams)
+
+        expect(account).toEqual(httpResult)
+
+    })
+
 })
