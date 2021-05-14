@@ -63,7 +63,7 @@ describe('SignUp component', () => {
 
     })
 
-    test('Shoul call handle with correct values', async () => {
+    test('Should call handle with correct values', async () => {
 
         const { wrapper } = makeSut()
 
@@ -91,6 +91,35 @@ describe('SignUp component', () => {
         await createButton.trigger('submit.prevent')
 
         expect(handleSpy).toHaveBeenCalledWith(formParams, apiResponseParams, false)
+
+    })
+
+    test('Should not call handle when form is imcomplete', async () => {
+
+        const { wrapper } = makeSut()
+
+        const handleSpy = jest.spyOn(wrapper.vm, 'handle')
+
+        const password = faker.internet.password()
+
+        const formParams: SignUpParams = {
+            birth_date: faker.datatype.datetime().toISOString(),
+            email: faker.internet.email(),
+            name: faker.random.words(),
+            password,
+            passwordConfirm: password,
+            username: ""
+        }
+
+        wrapper.setData({
+            form: formParams
+        })
+
+        const createButton = wrapper.find('[data-test=signup-button]')
+
+        await createButton.trigger('click')
+
+        expect(handleSpy).not.toHaveBeenCalled()
 
     })
 
