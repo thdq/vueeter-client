@@ -1,5 +1,5 @@
 import { SignUpParams } from '@/domain/usecases/signup'
-import { shallowMount, Wrapper } from '@vue/test-utils'
+import { mount, Wrapper } from '@vue/test-utils'
 import faker from 'faker'
 import signup from './signup.vue'
 
@@ -11,7 +11,7 @@ interface WrapperTypes {
 
 const makeSut = (): WrapperTypes => {
 
-    const wrapper = shallowMount(signup, {
+    const wrapper = mount(signup, {
         mocks: {
             $t: () => {}
         }
@@ -63,7 +63,7 @@ describe('SignUp component', () => {
 
     })
 
-    test('Shoul call handle with correct values', () => {
+    test('Shoul call handle with correct values', async () => {
 
         const { wrapper } = makeSut()
 
@@ -88,9 +88,9 @@ describe('SignUp component', () => {
 
         const createButton = wrapper.find('[data-test=signup-button]')
 
-        createButton.trigger('click')
+        await createButton.trigger('submit.prevent')
 
-        expect(handleSpy).toHaveBeenCalledWith(formParams, apiResponseParams)
+        expect(handleSpy).toHaveBeenCalledWith(formParams, apiResponseParams, false)
 
     })
 
