@@ -141,7 +141,7 @@ export default defineComponent({
             username: ""
         })
 
-        const handle = (form: SignUpParams, apiResponse: SignupAPIResponse, invalid: boolean = true): void => {
+        const handle = async (form: SignUpParams, apiResponse: SignupAPIResponse, invalid: boolean = true): Promise<void> => {
 
             try {
 
@@ -150,7 +150,7 @@ export default defineComponent({
 
                 const signUpService = new SignUpService(store)
 
-                signUpService.create(form)
+                await signUpService.create(form)
 
             } catch (error) {
 
