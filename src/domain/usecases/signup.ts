@@ -9,6 +9,6 @@ export type SignUpParams = {
     username: string
 }
 
-export interface Authentication {
+export interface AddUser {
     signup (params: SignUpParams): Promise<UserModel>
 }
