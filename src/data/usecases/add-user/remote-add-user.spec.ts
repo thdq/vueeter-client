@@ -1,5 +1,6 @@
 import { HttpClient, HttpMethod, HttpRequest, HttpResponse, HttpStatusCode } from '@/data/protocols/http/http-client'
 import { EmailInUseError } from '@/domain/errors/email-in-use'
+import { UnexpectedError } from '@/domain/errors/unexpected'
 import { UserModel } from '@/domain/model/user-model'
 import { SignUpParams } from '@/domain/usecases/signup'
 import faker from 'faker'
@@ -98,6 +99,32 @@ describe('RemoteAddUser', () => {
         const promise = sut.signup(formParams)
 
         await expect(promise).rejects.toThrow(new EmailInUseError())
+
+    })
+
+    test('Should throw UnexpectedError if HttpClient returns 500', async () => {
+
+        const { sut, httpClientStub } = makeSut()
+
+        httpClientStub.response = {
+            statusCode: HttpStatusCode.serverError
+        }
+
+        const password = faker.internet.password()
+
+        const formParams: SignUpParams = {
+            birth_date: faker.datatype.datetime().toISOString(),
+            email: faker.internet.email(),
+            name: faker.random.words(),
+            password,
+            passwordConfirm: password,
+            username: faker.internet.userName()
+        }
+
+        const promise = sut.signup(formParams)
+
+        await expect(promise).rejects.toThrow(new UnexpectedError())
+
     })
 
 })
