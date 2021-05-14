@@ -11,9 +11,9 @@ export class LoginService {
 
     async auth (form: AuthenticationParams): Promise<void> {
 
-        const createUserService = makeCreateAuthentication()
+        const makeCreateAuthenticationService = makeCreateAuthentication()
 
-        const currentUser = await createUserService.auth(form)
+        const currentUser = await makeCreateAuthenticationService.auth(form)
 
         await this.store.dispatch('user/auth', currentUser)
     }
