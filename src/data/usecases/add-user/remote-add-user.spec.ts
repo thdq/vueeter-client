@@ -1,4 +1,5 @@
 import { HttpClient, HttpMethod, HttpRequest, HttpResponse, HttpStatusCode } from '@/data/protocols/http/http-client'
+import { EmailInUseError } from '@/domain/errors/email-in-use'
 import { UserModel } from '@/domain/model/user-model'
 import { SignUpParams } from '@/domain/usecases/signup'
 import faker from 'faker'
@@ -73,6 +74,30 @@ describe('RemoteAddUser', () => {
 
         expect(httpClientStub.body).toEqual(formParams)
 
+    })
+
+    test('Should throw EmailInUseError if HttpClient returns 403', async () => {
+
+        const { sut, httpClientStub } = makeSut()
+
+        httpClientStub.response = {
+            statusCode: HttpStatusCode.forbidden
+        }
+
+        const password = faker.internet.password()
+
+        const formParams: SignUpParams = {
+            birth_date: faker.datatype.datetime().toISOString(),
+            email: faker.internet.email(),
+            name: faker.random.words(),
+            password,
+            passwordConfirm: password,
+            username: faker.internet.userName()
+        }
+
+        const promise = sut.signup(formParams)
+
+        await expect(promise).rejects.toThrow(new EmailInUseError())
     })
 
 })
