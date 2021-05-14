@@ -1,4 +1,5 @@
 import { SignUpParams } from "@/domain/usecases/signup"
+import { makeCreateUser } from "@/main/factories/components/signup"
 import { Store } from 'vuex'
 
 export class SignUpService {
@@ -10,9 +11,11 @@ export class SignUpService {
 
     async create (form: SignUpParams): Promise<void> {
 
-        console.log(form)
+        const makeCreateUserService = makeCreateUser()
 
-        return await Promise.resolve()
+        const newUser = await makeCreateUserService.signup(form)
+
+        await this.store.dispatch('user/auth', newUser)
 
     }
 
