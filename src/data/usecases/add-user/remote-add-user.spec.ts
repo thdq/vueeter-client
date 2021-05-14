@@ -127,4 +127,28 @@ describe('RemoteAddUser', () => {
 
     })
 
+    test('Should throw UnexpectedError if HttpClient returns 404', async () => {
+
+        const { sut, httpClientStub } = makeSut()
+
+        httpClientStub.response = {
+            statusCode: HttpStatusCode.notFound
+        }
+
+        const password = faker.internet.password()
+
+        const formParams: SignUpParams = {
+            birth_date: faker.datatype.datetime().toISOString(),
+            email: faker.internet.email(),
+            name: faker.random.words(),
+            password,
+            passwordConfirm: password,
+            username: faker.internet.userName()
+        }
+
+        const promise = sut.signup(formParams)
+
+        await expect(promise).rejects.toThrow(new UnexpectedError())
+    })
+
 })
