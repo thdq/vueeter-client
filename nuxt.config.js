@@ -3,6 +3,7 @@ import { langs } from './src/presentation/config/i18n'
 import { resolve } from 'path'
 
 export default {
+    mode: "spa",
     srcDir: 'src/presentation/',
     head: {
         title: 'vueeter',

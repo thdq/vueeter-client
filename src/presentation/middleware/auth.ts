@@ -8,20 +8,11 @@ class AuthMiddleware implements MiddlewareProtocol {
         this.context = context
     }
 
-    handle (): boolean {
+    handle (): void {
 
         const authenticated = this.isAuthenticated()
 
-        const currentRoute = this.getCurrentRoute()
-
-        const routesAllowed = this.getAnonymousRoutesAllowed()
-
-        if (!authenticated && !routesAllowed.includes(currentRoute)) {
-            this.redirectTo('/login')
-            return false
-        }
-
-        return true
+        if (authenticated) this.redirectTo('/home')
 
     }
 
@@ -29,18 +20,13 @@ class AuthMiddleware implements MiddlewareProtocol {
 
         const { store } = this.context
 
+        if (!store.getters['user/isAuthenticated']) {
+
+            store.dispatch('user/auth', null)
+
+        }
+
         return store?.getters?.isAuthenticated || false
-    }
-
-    getCurrentRoute (): string {
-
-        const { app } = this.context
-
-        return app?.router?.currentRoute.path || '/'
-    }
-
-    getAnonymousRoutesAllowed (): string[] {
-        return ['/login', '/', '/signup']
     }
 
     redirectTo (path: string): string {
