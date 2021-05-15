@@ -1,10 +1,10 @@
 import { HttpClient, HttpStatusCode } from '@/data/protocols/http/http-client'
-import { AddUser, SignUpParams } from '@/domain/usecases/signup'
+import { SignUpParams } from '@/domain/usecases/signup'
 import { UnexpectedError } from '@/domain/errors/unexpected'
 import { UserModel } from '@/domain/model/user-model'
 import { EmailInUseError } from '@/domain/errors/email-in-use'
 
-export class RemoteAddUser implements AddUser {
+export class RemoteAddUser {
     private readonly url: string
     private readonly httpClient: HttpClient<UserModel>
 
