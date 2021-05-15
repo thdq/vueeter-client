@@ -47,13 +47,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useStore, useRouter } from '@nuxtjs/composition-api'
 import { LoginAPIResponse, AuthenticationParams, LoginService } from './login.protocols'
 
 export default defineComponent({
     name: "VLogin",
     setup () {
         const store = useStore()
+        const router = useRouter()
 
         const apiResponse = ref<LoginAPIResponse>({
             waiting: false,
@@ -75,6 +76,8 @@ export default defineComponent({
                 const loginService = new LoginService(store)
 
                 await loginService.auth(form)
+
+                router.push('/home')
 
             } catch (error) {
 

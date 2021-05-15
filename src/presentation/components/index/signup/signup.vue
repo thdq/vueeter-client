@@ -111,7 +111,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, reactive, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, useStore, useRouter } from '@nuxtjs/composition-api'
 import { ValidationProvider, ValidationObserver } from 'vee-validate/dist/vee-validate.full'
 import { SignUpParams } from "@/domain/usecases/signup"
 import { SignUpService } from '@/presentation/services/user/signup'
@@ -125,6 +125,7 @@ export default defineComponent({
     name: 'VSignup',
     setup () {
         const store = useStore()
+        const router = useRouter()
 
         const apiResponse = reactive<SignupAPIResponse>({
             waiting: false,
@@ -151,6 +152,8 @@ export default defineComponent({
                 const signUpService = new SignUpService(store)
 
                 await signUpService.create(form)
+
+                router.push('/home')
 
             } catch (error) {
 
