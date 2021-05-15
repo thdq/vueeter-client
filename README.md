@@ -30,8 +30,8 @@
 
 #### Application functionality to version 1.x.x:
 
-- [ ] Sign up an user;
-- [ ] Login an user;
+- [x] Sign up an user;
+- [x] Login an user;
 
   
 
