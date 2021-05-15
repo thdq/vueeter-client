@@ -1,7 +1,8 @@
 {
     "domain": {
-        "erros:": {
+        "errors": {
             "invalid": {
+                "unexpected": "Unexpected error",
                 "credentials": "Crendentials provided is incorrect"
             }
         }
@@ -61,7 +62,9 @@
                         "invalid_password": "Password is not valid",
                         "not_match_password": "Passwords do not macth"
                     }
-
+                },
+                "error": {
+                    "title": "There was an error create the user"
                 }
             }
         }
