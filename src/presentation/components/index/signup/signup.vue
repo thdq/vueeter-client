@@ -87,7 +87,7 @@
                                 <template class="py-0" #title>
                                     {{ $t('welcome.signup.form.error.title') }}
                                 </template>
-                                {{ apiResponse.messageError }}
+                                {{ $t(apiResponse.messageError) }}
                             </vs-alert>
                         </vs-row>
                         <vs-row class="py-2">
@@ -111,7 +111,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, reactive, useStore, useRouter, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, useStore, useRouter } from '@nuxtjs/composition-api'
 import { ValidationProvider, ValidationObserver } from 'vee-validate/dist/vee-validate.full'
 import { SignUpParams } from "@/domain/usecases/signup"
 import { SignUpService } from '@/presentation/services/user/signup'
@@ -126,7 +126,6 @@ export default defineComponent({
     setup () {
         const store = useStore()
         const router = useRouter()
-        const { i18n } = useContext()
 
         const apiResponse = reactive<SignupAPIResponse>({
             waiting: false,
@@ -159,7 +158,7 @@ export default defineComponent({
             } catch (error) {
 
                 apiResponse.error = true
-                apiResponse.messageError = i18n.t(error.message).toString()
+                apiResponse.messageError = error.message
 
             } finally {
 

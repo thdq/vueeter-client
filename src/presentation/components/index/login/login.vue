@@ -23,7 +23,7 @@
                         <template class="py-0" #title>
                             {{ $t('welcome.login.form.error.title') }}
                         </template>
-                        {{ apiResponse.messageError }}
+                        {{ $t(apiResponse.messageError) }}
                     </vs-alert>
                 </vs-row>
                 <vs-row class="py-2">
@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useStore, useRouter, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useStore, useRouter } from '@nuxtjs/composition-api'
 import { LoginAPIResponse, AuthenticationParams, LoginService } from './login.protocols'
 
 export default defineComponent({
@@ -55,7 +55,6 @@ export default defineComponent({
     setup ({ context }) {
         const store = useStore()
         const router = useRouter()
-        const { i18n } = useContext()
 
         const apiResponse = ref<LoginAPIResponse>({
             waiting: false,
@@ -83,7 +82,7 @@ export default defineComponent({
             } catch (error) {
 
                 apiResponse.error = true
-                apiResponse.messageError = i18n.t(error.message).toString()
+                apiResponse.messageError = error.message
 
             } finally {
 
