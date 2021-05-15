@@ -1,5 +1,3 @@
-import { UserModel } from '../model/user-model'
-
 export type SignUpParams = {
     name: string,
     email: string,
@@ -10,5 +8,5 @@ export type SignUpParams = {
 }
 
 export interface AddUser {
-    signup (params: SignUpParams): Promise<UserModel>
+    create (form: SignUpParams): Promise<void>
 }
