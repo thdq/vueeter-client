@@ -66,8 +66,5 @@ export default {
         '~static': `<srcDir>/static`,
     },
     build: {
-    },
-    router: {
-        middleware: ['auth']
     }
 }

@@ -26,7 +26,7 @@ class AuthMiddleware implements MiddlewareProtocol {
 
         }
 
-        return store?.getters?.isAuthenticated || false
+        return store.getters['user/isAuthenticated'] || false
     }
 
     redirectTo (path: string): string {

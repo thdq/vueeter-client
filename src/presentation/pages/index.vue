@@ -63,6 +63,7 @@ export default defineComponent({
         'v-login': loginComponent,
         'v-signup': signupComponent
     },
+    middleware: ['auth'],
     data () {
         return {
             modal: {
