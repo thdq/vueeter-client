@@ -78,6 +78,16 @@
                     "password": "Password"
                 }
             }
+        },
+        "sidebar": {
+            "menu": {
+                "home": "Home",
+                "notifications": "Notifications",
+                "profile": "Profile"
+            },
+            "buttons": {
+                "create_vueet": "New Vueet"
+            }
         }
     }
 }
