@@ -24,7 +24,7 @@ export class RemoteAddUser {
         switch (httpResponse.statusCode) {
             case HttpStatusCode.success: return httpResponse.body
             case HttpStatusCode.forbidden: throw new EmailInUseError()
-            default: throw new UnexpectedError()
+            default: throw new UnexpectedError(httpResponse?.body)
         }
     }
 }

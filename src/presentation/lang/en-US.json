@@ -3,7 +3,8 @@
         "errors": {
             "invalid": {
                 "unexpected": "Unexpected error",
-                "credentials": "Crendentials provided is incorrect"
+                "credentials": "Crendentials provided is incorrect",
+                "password_rule": "The password must contain a number, uppercase letter and be greater than or equal to 8 characters"
             }
         }
     },

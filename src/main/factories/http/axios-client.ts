@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse, HttpClient, HttpMethod, HttpStatusCode } from '@/data/protocols/http/http-client'
 
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 
 class AxiosHttpClient implements HttpClient {
     url?: string
@@ -24,7 +24,9 @@ class AxiosHttpClient implements HttpClient {
 
         } catch (error) {
 
-            if (error.status) {
+            const axiosErrorResponse: AxiosError = Object.assign({}, error)
+
+            if (axiosErrorResponse?.response?.status) {
 
                 axiosResponse = error.response
 
