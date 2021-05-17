@@ -20,6 +20,7 @@ export default defineComponent({
     components: {
         'v-sidebar': Sidebar
     },
+    middleware: ['home'],
     name: "VHome",
     setup () {
 
