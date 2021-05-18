@@ -1,5 +1,6 @@
 import { SignUpParams } from '@/domain/usecases/signup'
 import { mount, Wrapper, createLocalVue } from '@vue/test-utils'
+import flushPromises from 'flush-promises'
 import Vue from 'vue'
 import faker from 'faker'
 import vuesax from 'vuesax'
@@ -10,6 +11,7 @@ jest.spyOn(console, 'error').mockImplementation(() => {})
 const nextTick = async (wrapper: Wrapper<any>): Promise<void> => {
     await Vue.nextTick()
     await wrapper.vm.$nextTick()
+    await flushPromises()
 }
 
 interface WrapperTypes {
@@ -147,6 +149,23 @@ describe('SignUp component', () => {
         await nameInput.trigger('blur')
 
         await wrapper.find('input[data-test=email-input]').trigger('click')
+
+        await nextTick(wrapper)
+
+        const nameInputError = nameDiv.find('.vs-input__message--danger')
+
+        expect(nameInputError.isVisible()).toBe(true)
+
+    })
+
+    test('Should show error when name input contains more than 50 characters', async () => {
+
+        const { wrapper } = makeSut()
+
+        const nameInput = wrapper.find('input[data-test=name-input]')
+        const nameDiv = wrapper.find('[data-test=name-input]')
+
+        await nameInput.setValue(faker.random.words(50))
 
         await nextTick(wrapper)
 
