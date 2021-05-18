@@ -1,9 +1,16 @@
 import { SignUpParams } from '@/domain/usecases/signup'
-import { mount, Wrapper } from '@vue/test-utils'
+import { mount, Wrapper, createLocalVue } from '@vue/test-utils'
+import Vue from 'vue'
 import faker from 'faker'
+import vuesax from 'vuesax'
 import signup from './signup.vue'
 
 jest.spyOn(console, 'error').mockImplementation(() => {})
+
+const nextTick = async (wrapper: Wrapper<any>): Promise<void> => {
+    await Vue.nextTick()
+    await wrapper.vm.$nextTick()
+}
 
 interface WrapperTypes {
     wrapper: Wrapper<any>
@@ -11,10 +18,15 @@ interface WrapperTypes {
 
 const makeSut = (): WrapperTypes => {
 
+    const Vue = createLocalVue()
+    Vue.use(vuesax)
+    const localVue = Vue
+
     const wrapper = mount(signup, {
         mocks: {
             $t: () => {}
-        }
+        },
+        localVue
     })
 
     return {
@@ -120,6 +132,27 @@ describe('SignUp component', () => {
         await createButton.trigger('click')
 
         expect(handleSpy).not.toHaveBeenCalled()
+
+    })
+
+    test('Should show error when name input is not provided', async () => {
+
+        const { wrapper } = makeSut()
+
+        const nameInput = wrapper.find('input[data-test=name-input]')
+        const nameDiv = wrapper.find('[data-test=name-input]')
+
+        await nameInput.trigger('click')
+        await nameInput.setValue('')
+        await nameInput.trigger('blur')
+
+        await wrapper.find('input[data-test=email-input]').trigger('click')
+
+        await nextTick(wrapper)
+
+        const nameInputError = nameDiv.find('.vs-input__message--danger')
+
+        expect(nameInputError.isVisible()).toBe(true)
 
     })
 
