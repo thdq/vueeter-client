@@ -144,11 +144,7 @@ describe('SignUp component', () => {
         const nameInput = wrapper.find('input[data-test=name-input]')
         const nameDiv = wrapper.find('[data-test=name-input]')
 
-        await nameInput.trigger('click')
         await nameInput.setValue('')
-        await nameInput.trigger('blur')
-
-        await wrapper.find('input[data-test=email-input]').trigger('click')
 
         await nextTick(wrapper)
 
