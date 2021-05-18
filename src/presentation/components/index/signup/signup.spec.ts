@@ -171,4 +171,21 @@ describe('SignUp component', () => {
 
     })
 
+    test('Should show error when birth date input is not provided', async () => {
+
+        const { wrapper } = makeSut()
+
+        const nameInput = wrapper.find('input[data-test=birthDate-input]')
+        const nameDiv = wrapper.find('[data-test=birthDate-input]')
+
+        await nameInput.setValue('')
+
+        await nextTick(wrapper)
+
+        const nameInputError = nameDiv.find('.vs-input__message--danger')
+
+        expect(nameInputError.isVisible()).toBe(true)
+
+    })
+
 })
