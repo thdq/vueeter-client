@@ -5,7 +5,7 @@
                 <vs-row align="center" justify="space-around" direction="column">
                     <vs-col w="12">
                         <vs-row class="py-4">
-                            <ValidationProvider v-slot="{ errors }" class="w-full" name="name" rules="required">
+                            <ValidationProvider v-slot="{ errors }" class="w-full" name="name" rules="required|max:50">
                                 <vs-input v-model="form.name" :label-placeholder="$t('welcome.signup.form.label.name')" block data-test="name-input" :danger="errors.length > 0">
                                     <template v-if="errors.length > 0" #message-danger>
                                         {{ errors[0] }}
@@ -118,11 +118,11 @@ import { SignUpService } from '@/presentation/services/user/signup'
 import { SignupAPIResponse } from "./signup.protocols"
 
 export default defineComponent({
+    name: 'VSignup',
     components: {
         ValidationProvider,
         ValidationObserver
     },
-    name: 'VSignup',
     setup () {
         const store = useStore()
         const router = useRouter()
