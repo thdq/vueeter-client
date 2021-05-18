@@ -188,6 +188,23 @@ describe('SignUp component', () => {
 
     })
 
+    test('Should show error when email input is not a valid email', async () => {
+
+        const { wrapper } = makeSut()
+
+        const nameInput = wrapper.find('input[data-test=email-input]')
+        const nameDiv = wrapper.find('[data-test=email-input]')
+
+        await nameInput.setValue(faker.random.word())
+
+        await nextTick(wrapper)
+
+        const nameInputError = nameDiv.find('.vs-input__message--danger')
+
+        expect(nameInputError.isVisible()).toBe(true)
+
+    })
+
     test('Should show error when birth date input is not provided', async () => {
 
         const { wrapper } = makeSut()
