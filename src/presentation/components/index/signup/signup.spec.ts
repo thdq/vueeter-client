@@ -222,4 +222,21 @@ describe('SignUp component', () => {
 
     })
 
+    test('Should show error when password input is not provided', async () => {
+
+        const { wrapper } = makeSut()
+
+        const nameInput = wrapper.find('input[data-test=password-input]')
+        const nameDiv = wrapper.find('[data-test=password-input]')
+
+        await nameInput.setValue('')
+
+        await nextTick(wrapper)
+
+        const nameInputError = nameDiv.find('.vs-input__message--danger')
+
+        expect(nameInputError.isVisible()).toBe(true)
+
+    })
+
 })
