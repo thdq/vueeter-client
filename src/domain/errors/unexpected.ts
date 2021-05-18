@@ -3,8 +3,6 @@ export class UnexpectedError extends Error {
 
         const messageError = body?.message || 'domain.errors.invalid.unexpected'
 
-        console.log(body)
-
         super(messageError)
         this.name = 'UnexpectedError'
     }
