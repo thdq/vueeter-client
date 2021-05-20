@@ -175,16 +175,16 @@ describe('SignUp component', () => {
 
         const { wrapper } = makeSut()
 
-        const nameInput = wrapper.find('input[data-test=email-input]')
-        const nameDiv = wrapper.find('[data-test=email-input]')
+        const emailInput = wrapper.find('input[data-test=email-input]')
+        const emailDiv = wrapper.find('[data-test=email-input]')
 
-        await nameInput.setValue('')
+        await emailInput.setValue('')
 
         await nextTick(wrapper)
 
-        const nameInputError = nameDiv.find('.vs-input__message--danger')
+        const divInputError = emailDiv.find('.vs-input__message--danger')
 
-        expect(nameInputError.isVisible()).toBe(true)
+        expect(divInputError.isVisible()).toBe(true)
 
     })
 
@@ -192,16 +192,16 @@ describe('SignUp component', () => {
 
         const { wrapper } = makeSut()
 
-        const nameInput = wrapper.find('input[data-test=email-input]')
-        const nameDiv = wrapper.find('[data-test=email-input]')
+        const emailInput = wrapper.find('input[data-test=email-input]')
+        const emailDiv = wrapper.find('[data-test=email-input]')
 
-        await nameInput.setValue(faker.random.word())
+        await emailInput.setValue(faker.random.word())
 
         await nextTick(wrapper)
 
-        const nameInputError = nameDiv.find('.vs-input__message--danger')
+        const divInputError = emailDiv.find('.vs-input__message--danger')
 
-        expect(nameInputError.isVisible()).toBe(true)
+        expect(divInputError.isVisible()).toBe(true)
 
     })
 
@@ -209,16 +209,16 @@ describe('SignUp component', () => {
 
         const { wrapper } = makeSut()
 
-        const nameInput = wrapper.find('input[data-test=birthDate-input]')
-        const nameDiv = wrapper.find('[data-test=birthDate-input]')
+        const birthDateInput = wrapper.find('input[data-test=birthDate-input]')
+        const birthDateDiv = wrapper.find('[data-test=birthDate-input]')
 
-        await nameInput.setValue('')
+        await birthDateInput.setValue('')
 
         await nextTick(wrapper)
 
-        const nameInputError = nameDiv.find('.vs-input__message--danger')
+        const birthDateError = birthDateDiv.find('.vs-input__message--danger')
 
-        expect(nameInputError.isVisible()).toBe(true)
+        expect(birthDateError.isVisible()).toBe(true)
 
     })
 
@@ -226,16 +226,16 @@ describe('SignUp component', () => {
 
         const { wrapper } = makeSut()
 
-        const nameInput = wrapper.find('input[data-test=password-input]')
-        const nameDiv = wrapper.find('[data-test=password-input]')
+        const passwordInput = wrapper.find('input[data-test=password-input]')
+        const passwordDiv = wrapper.find('[data-test=password-input]')
 
-        await nameInput.setValue('')
+        await passwordInput.setValue('')
 
         await nextTick(wrapper)
 
-        const nameInputError = nameDiv.find('.vs-input__message--danger')
+        const passwordInputError = passwordDiv.find('.vs-input__message--danger')
 
-        expect(nameInputError.isVisible()).toBe(true)
+        expect(passwordInputError.isVisible()).toBe(true)
 
     })
 
@@ -243,16 +243,16 @@ describe('SignUp component', () => {
 
         const { wrapper } = makeSut()
 
-        const nameInput = wrapper.find('input[data-test=passwordConfirm-input]')
-        const nameDiv = wrapper.find('[data-test=passwordConfirm-input]')
+        const passwordInput = wrapper.find('input[data-test=passwordConfirm-input]')
+        const passwordDiv = wrapper.find('[data-test=passwordConfirm-input]')
 
-        await nameInput.setValue('')
+        await passwordInput.setValue('')
 
         await nextTick(wrapper)
 
-        const nameInputError = nameDiv.find('.vs-input__message--danger')
+        const passwordInputError = passwordDiv.find('.vs-input__message--danger')
 
-        expect(nameInputError.isVisible()).toBe(true)
+        expect(passwordInputError.isVisible()).toBe(true)
 
     })
 
