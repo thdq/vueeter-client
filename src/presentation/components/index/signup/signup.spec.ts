@@ -256,4 +256,21 @@ describe('SignUp component', () => {
 
     })
 
+    test('Should show error when username input is not provided', async () => {
+
+        const { wrapper } = makeSut()
+
+        const usernameInput = wrapper.find('input[data-test=username-input]')
+        const usernameDiv = wrapper.find('[data-test=username-input]')
+
+        await usernameInput.setValue('')
+
+        await nextTick(wrapper)
+
+        const usernameInputError = usernameDiv.find('.vs-input__message--danger')
+
+        expect(usernameInputError.isVisible()).toBe(true)
+
+    })
+
 })
