@@ -273,4 +273,24 @@ describe('SignUp component', () => {
 
     })
 
+    test('Should show error when password and password confirmation input is not equals', async () => {
+
+        const { wrapper } = makeSut()
+
+        const passwordInput = wrapper.find('input[data-test=password-input]')
+        const passwordConfirmInput = wrapper.find('input[data-test=passwordConfirm-input]')
+
+        const passwordDiv = wrapper.find('[data-test=password-input]')
+
+        await passwordInput.setValue(faker.random.words(1))
+        await passwordConfirmInput.setValue(faker.random.words(2))
+
+        await nextTick(wrapper)
+
+        const passwordInputError = passwordDiv.find('.vs-input__message--danger')
+
+        expect(passwordInputError.isVisible()).toBe(true)
+
+    })
+
 })
