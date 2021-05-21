@@ -66,5 +66,6 @@ export default {
         '~static': `<srcDir>/static`,
     },
     build: {
-    }
+    },
+    ignore: ['**/*.test.*', '**/*.spec.*']
 }
