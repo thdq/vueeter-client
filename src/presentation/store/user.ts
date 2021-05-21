@@ -1,4 +1,5 @@
 import { UserModel } from "@/domain/model/user-model"
+import { makeLocalStorageAdapter } from "@/main/factories/cache/local-storage-adapter"
 
 interface UserState {
     currentUser: UserModel,
@@ -17,11 +18,13 @@ export const mutations = {
 }
 
 export const actions = {
-    auth ({ commit }, user: UserModel) {
+    async auth ({ commit }, user: UserModel) {
 
         if (!user) {
 
-            const accessToken = localStorage.getItem('accessToken')
+            const localStorageAdapter = makeLocalStorageAdapter()
+
+            const accessToken = await localStorageAdapter.get('accessToken')
 
             user = {
                 accessToken
